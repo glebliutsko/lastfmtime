@@ -1,0 +1,2 @@
+requests
+git+https://github.com/MarshalX/yandex-music-api@development#egg=yandex-music
