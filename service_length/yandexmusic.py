@@ -8,7 +8,7 @@ class YandexMusic(ServiceABC):
     def __init__(self, yandex_music: Client):
         self.yandex_music = yandex_music
 
-    def get_length_track(self, title: str, artist: str, album: Optional[str]) -> Optional[int]:
+    def get_length_track(self, title: str, artist: str, album: Optional[str] = None) -> Optional[int]:
         result_search = self.yandex_music.search(f'{artist} - {title}')
         if result_search.tracks is None:
             return None
@@ -18,8 +18,7 @@ class YandexMusic(ServiceABC):
         if title.lower() != find_track.title.lower():
             return None
 
-        if album.lower() not in [i.title.lower() for i in find_track.albums] or \
-                artist.lower() not in [i.name.lower() for i in find_track.artists]:
+        if artist.lower() not in [i.name.lower() for i in find_track.artists]:
             return None
 
         return find_track.duration_ms // 1000

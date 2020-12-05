@@ -4,5 +4,5 @@ from typing import Optional
 
 class ServiceABC(ABC):
     @abstractmethod
-    def get_length_track(self, title: str, artist: str, album: Optional[str]) -> Optional[int]:
+    def get_length_track(self, title: str, artist: str, album: Optional[str] = None) -> Optional[int]:
         pass
