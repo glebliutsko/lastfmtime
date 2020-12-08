@@ -1,3 +1,4 @@
+import argparse
 import datetime
 import logging
 from dataclasses import dataclass
@@ -88,11 +89,20 @@ class LastFMTime:
 
 
 def main():
-    lastfm_api = LastFMAPI('19ab4773cf02ed33bb1354017e3286ef')
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-o', '--output', help='Output csv file', required=True)
+    parser.add_argument('-u', '--user', help='Username LastFM', required=True)
+    parser.add_argument('-k', '--lastfm-key', help='LastFM API Key', required=True)
+
+    arg = parser.parse_args()
+
+    lastfm_api = LastFMAPI(arg.lastfm_key)
     service = [service_length.LastFM(lastfm_api), service_length.YandexMusic(YMClient(report_new_fields=False))]
-    lastfm_time = LastFMTime(lastfm_api, 'glebliutsko', service)
+    lastfm_time = LastFMTime(lastfm_api, arg.user, service)
+
     statistics = lastfm_time.get_statistics()
-    print(statistics.get_time_listening())
+    statistics.export2csvfile(arg.output)
 
 
 if __name__ == '__main__':
